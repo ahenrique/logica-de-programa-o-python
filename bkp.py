@@ -14,16 +14,16 @@ def backup(origem, destino, pao=''):
         if not caminho_destino.exists():
             caminho_destino.mkdir()
             if not caminho_destino.joinpath(arquivo.name).exists():
-                if arquivo.is_file():
+                if arquivo.is_file() and not arquivo.name.startswith('~$'):
                     shutil.copy2(arquivo, caminho_destino.joinpath(arquivo.name))            
         else:
-            if arquivo.is_file():
+            if arquivo.is_file() and not arquivo.name.startswith('~$'):
                 if not caminho_destino.joinpath(arquivo.name).exists():
                     shutil.copy2(arquivo, caminho_destino.joinpath(arquivo.name))
                 else:
                     arq_org = arquivo.stat().st_mtime
                     arq_dst = caminho_destino.joinpath(arquivo.name).stat().st_mtime
-                    if arq_org > arq_dst:
+                    if arq_org > arq_dst and not arquivo.name.startswith('~$'):
                         shutil.copy2(arquivo, caminho_destino.joinpath(arquivo.name))
             
         backup(caminho_origem, caminho_destino, arquivo.name)
